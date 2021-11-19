@@ -14,6 +14,8 @@ import utils.kernels as kernels
 def aronsson(X):
     return np.absolute(X[:,0])**(4/3) - np.absolute(X[:,1])**(4/3)
 
+
+# scales
 def graph_scale(n):
     return (1/n)**(1/4)
 
@@ -27,6 +29,7 @@ use_grid = False
 num_trials = 5
 parallel = False
 
+# domain and kernel
 Omega = domains.neumann_triangle()
 eta = kernels.singular()
 
