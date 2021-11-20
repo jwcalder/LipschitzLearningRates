@@ -67,7 +67,7 @@ class neumann_star(domain):
         if not usegrid:
             X = 2*gl.rand(4*n, 2) - np.ones((1,2))
         else:
-            m = int(np.sqrt(4*n))
+            m = int(np.sqrt(n))
             x,y = np.mgrid[-(m-1):m,-(m-1):m]/(m-1) 
             x,y = x.flatten(),y.flatten()
             X = np.vstack((x,y)).T
