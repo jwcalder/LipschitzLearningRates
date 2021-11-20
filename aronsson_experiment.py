@@ -12,13 +12,6 @@ from utils import kernels
 def aronsson(X):
     return np.absolute(X[:,0])**(4/3) - np.absolute(X[:,1])**(4/3)
 
-# scales
-def graph_scale(n):
-    return (1/n)**(1/4)
-
-def boundary_scale(n):
-    return (1/n)**(1/4)
-
 #Print help
 def print_help():
     
@@ -28,10 +21,10 @@ def print_help():
     print('                                                        ')
     print('Options:')
     print('   -h (--help): Print help.') 
-    print('   -D (--domain=): Domain (Options=box,triangle,star, default=box).')
-    print('   -b (--bandwidth=): Graph bandwidth exponent b in form h=delta^b (default=1).')
+    print('   -D (--domain=): Domain (Options=square, neumann_triangle, neumann_star, default=box).')
+    print('   -b (--bandwidth=): Graph bandwidth constant a and exponent b in form h= a*delta^b (default: a,b=1,1).')
     print('   -d (--dilate_bc): Dilate boundary points by graph bandwidth.')
-    print('   -s (--singular_kernel): Use a singular kernel for weights (default=False).')
+    print('   -s (--singular_kernel): Use a singular kernel for weights.')
     print('   -g (--use_grid): Replace iid sequence with a grid.')
     print('   -t (--num_trials=): Number of trials to run (default=10).')
     print('   -p (--parallel): Use parallel processing over the trials.')
@@ -41,9 +34,10 @@ def print_help():
 #Parameters
 num_verts = [2**e  for e in range(12,17)]
 num_cores = 1
-domain = 'box'
+domain = 'square'
 bandwidth_exp = 1.0
-dilate_bc = False
+bandwidth_constant = 1.0
+dilate_bc = True
 singular_kernel = False
 use_grid = False
 num_trials = 10
@@ -65,8 +59,10 @@ for opt, arg in opts:
         sys.exit()
     elif opt in ("-D", "--domain"):
         domain = arg
+        Omega = getattr(domains, domain)()
     elif opt in ("-b", "--bandwidth"):
-        bandwidth_exp = float(arg)
+        bandwidth_constant = float(arg.split(',')[0])
+        bandwidth_exp = float(arg.split(',')[1])
     elif opt in ("-d", "--dilate_bc"):
         dilate_bc = True
     elif opt in ("-s", "--singular_kernel"):
@@ -83,47 +79,42 @@ for opt, arg in opts:
 #Set num_trials=1 for grid
 if use_grid:
     num_trials = 1
-    
-#print('Domain = '+domain)
-#print('bandwidth = delta^%.2f'%bandwidth_exp)
-#print('Dilate BC = ',dilate_bc)
-#print('Singular Kernel = ',singular_kernel)
-#print('Use Grid = ',use_grid)
-#print('Number of trials = %d'%num_trials)
-#print('Parallel = ',parallel)
-#print('num_cores = %d'%num_cores)
 
-%% Definition of one trial
+#Always dilate boundary conditions on square
+if domain == 'square':
+    dilate_bc = True
+    
+## Definition of one trial
 def trial(T):
     #Draw data randomly        
     X = Omega.sample(n,use_grid)
 
     #Build a graph
-    h = graph_scale(n)
+    delta = (np.log(n)/n)**(1/2)
+    h = bandwidth_constant * delta**bandwidth_exp
     W = gl.eps_weight_matrix(X,h,f=eta)*2/h
     if not gl.isconnected(W):
         print("Not connected!")
  
-    #
-    b_delta = boundary_scale(n)
-    I = Omega.boundary_mask(X, b_delta)
-
-    #Aronsson function
-    u_aronsson = aronsson(X)
+    #Boundary indices
+    if dilate_bc:
+        bdy_idx = Omega.boundary(X,h)
+    else:
+        bdy_idx = Omega.boundary(X,0)
 
     #Boundary values
-    g = u_aronsson[I]
+    bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,I,g,tol=1e-7,prog=False,T=1e5,weighted=singular_kernel)
+    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-7,prog=False,T=1e5,weighted=singular_kernel)
 
     #Error
-    err = np.max(np.absolute(u-u_aronsson))
+    err = np.max(np.absolute(u-aronsson(X)))
 
     #Print to screen
     print('%d,%d,%f,%f'%(n,T,h,err),flush=True)
 
-#%% main loop
+## main loop
 print('Number of Points,Trial Number,Graph Bandwidth,Error')
 for n in num_verts:
     #Number of cores for parallel processing
