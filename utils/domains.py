@@ -5,7 +5,7 @@ class domain:
     def __init__(self, fixed_verts=np.zeros((0,2))):
         self.fixed_verts = fixed_verts
     
-    def boundary_mask(self):
+    def boundary(self):
         pass
     
     def sample(self, n, usegrid=False):
@@ -44,20 +44,52 @@ class neumann_triangle(domain):
         self.r = r
     
     
-    def boundary_mask(self, X, delta=0.1):
+    def boundary(self, X, h):
         dist1 = np.sqrt(X[:,0]**2 + (X[:,1]-1)**2)
         dist2 = np.sqrt((X[:,0]-1)**2 + X[:,1]**2)
-        bdy_mask = np.where((dist1 <= delta) | (dist2 <= delta))
-        #
-        return bdy_mask[0]
+        if h == 0:
+            bdy_idx = np.array([np.argmin(dist1),np.argmin(dist2)])
+        else:
+            bdy_idx = np.where((dist1 <= h) | (dist2 <= h))[0]
+        return bdy_idx
     
     def winnow(self, X):
-        idx = np.where(X[:,1]<=self.domain_function(X[:,0]))
-        return X[idx[0], :], idx[0]
+        return X[self.domain_function(X[:,0],X[:,1]) <= 1, :]
     
-    def domain_function(self, x):
-        return (1-x**(2/3))**(3/2)
+    def domain_function(self, x, y):
+        return np.absolute(x)**(2/3) + np.absolute(y)**(2/3)
     
+    
+class neumann_star(domain):
+    def __init__(self, r = 0.1):
+        super().__init__()
+    
+    def sample(self, n, usegrid):
+        if not usegrid:
+            X = 2*gl.rand(4*n, 2) - np.ones((1,2))
+        else:
+            m = int(np.sqrt(n))
+            x,y = np.mgrid[-(m-1):m,-(m-1):m]/(m-1) 
+            x,y = x.flatten(),y.flatten()
+            X = np.vstack((x,y)).T
+        return self.winnow(X)
+    
+    def boundary(self, X, h):
+        dist1 = np.sqrt(X[:,0]**2 + (X[:,1]-1)**2)
+        dist2 = np.sqrt((X[:,0]-1)**2 + X[:,1]**2)
+        dist3 = np.sqrt(X[:,0]**2 + (X[:,1]+1)**2)
+        dist4 = np.sqrt((X[:,0]+1)**2 + X[:,1]**2)
+        if h == 0:
+            bdy_idx = np.array([np.argmin(dist1),np.argmin(dist2),np.argmin(dist3),np.argmin(dist4)])
+        else:
+            bdy_idx = np.where((dist1 <= h) | (dist2 <= h) | (dist3 <= h) | (dist4 <= h))[0]
+        return bdy_idx
+    
+    def winnow(self, X):
+        return X[self.domain_function(X[:,0],X[:,1]) <= 1, :]
+    
+    def domain_function(self, x, y):
+        return np.absolute(x)**(2/3) + np.absolute(y)**(2/3)
     
 class circle(domain):
     def __init__(self, r=1.0, m = [0,0], **kwargs):
