@@ -29,7 +29,7 @@ class square(domain):
         super().__init__(**kwargs)
         self.r = r
     
-    def boundary_mask(self, X, delta=0.1):
+    def boundary(self, X, delta=0.1):
         bdy_mask = np.where((X[:,0] > 1-delta) | (X[:,1] > 1-delta))
         return bdy_mask[0]
     
@@ -54,15 +54,16 @@ class neumann_triangle(domain):
         return bdy_idx
     
     def winnow(self, X):
-        return X[self.domain_function(X[:,0],X[:,1]) <= 1, :]
+        idx = np.where(self.domain_function(X[:,0],X[:,1]) <= 1)[0]
+        return X[idx, :], idx
     
     def domain_function(self, x, y):
         return np.absolute(x)**(2/3) + np.absolute(y)**(2/3)
     
     
 class neumann_star(domain):
-    def __init__(self, r = 0.1):
-        super().__init__()
+    def __init__(self, r = 0.1, **kwargs):
+        super().__init__(**kwargs)
     
     def sample(self, n, usegrid):
         if not usegrid:
@@ -86,7 +87,8 @@ class neumann_star(domain):
         return bdy_idx
     
     def winnow(self, X):
-        return X[self.domain_function(X[:,0],X[:,1]) <= 1, :]
+        idx = np.where(self.domain_function(X[:,0],X[:,1]) <= 1)[0]
+        return X[idx, :], idx
     
     def domain_function(self, x, y):
         return np.absolute(x)**(2/3) + np.absolute(y)**(2/3)
