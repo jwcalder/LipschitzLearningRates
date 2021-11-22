@@ -53,10 +53,6 @@ def make_plot(base_file_name,legend_loc='right'):
     n,h2,err2 = load_data('results/' + base_file_name + '_gscale2.csv')
     n,h3,err3 = load_data('results/' + base_file_name + '_gscale3.csv')
 
-    n,h1,err1_s = load_data('results/' + base_file_name + '_singular_gscale1.csv')
-    n,h2,err2_s = load_data('results/' + base_file_name + '_singular_gscale2.csv')
-    n,h3,err3_s = load_data('results/' + base_file_name + '_singular_gscale3.csv')
-
     delta = (np.log(n)/n)**(1/2)
 
     #eta=1
@@ -81,6 +77,12 @@ def make_plot(base_file_name,legend_loc='right'):
     plt.savefig('figures/' + base_file_name + '_plot_constant.pdf')
 
     #eta=1/t
+    n,h1,err1_s = load_data('results/' + base_file_name + '_singular_gscale1.csv')
+    n,h2,err2_s = load_data('results/' + base_file_name + '_singular_gscale2.csv')
+    n,h3,err3_s = load_data('results/' + base_file_name + '_singular_gscale3.csv')
+
+    delta = (np.log(n)/n)**(1/2)
+    
     fig, ax = plt.subplots()
 
     p = np.polyfit(np.log(delta[2:]),np.log(err1_s[2:]),1)
