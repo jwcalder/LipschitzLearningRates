@@ -22,6 +22,7 @@ def print_help():
     print('Options:')
     print('   -h (--help): Print help.') 
     print('   -D (--domain=): Domain (Options=square, neumann_triangle, neumann_star, default=box).')
+    print('   -n (--num_verts_range=): Range for number of vertices in the form 2^a up to 2^(b-1) (default: a,b=12,17).')
     print('   -b (--bandwidth=): Graph bandwidth constant a and exponent b in form h= a*delta^b (default: a,b=1,1).')
     print('   -d (--dilate_bc): Dilate boundary points by graph bandwidth.')
     print('   -s (--singular_kernel): Use a singular kernel for weights.')
@@ -29,6 +30,7 @@ def print_help():
     print('   -t (--num_trials=): Number of trials to run (default=10).')
     print('   -p (--parallel): Use parallel processing over the trials.')
     print('   -c (--num_cores=): Number of cores to use in parallel processing (default=1).')
+    print('   -v (--verbose): Verbose mode.')
 
 
 #Parameters
@@ -42,6 +44,7 @@ singular_kernel = False
 use_grid = False
 num_trials = 10
 parallel = False
+verbose = False
 
 # domain and kernel
 Omega = domains.neumann_triangle()
@@ -50,10 +53,10 @@ eta = kernels.singular()
 #Read command line parameters
 try:
     opts, args = getopt.getopt(sys.argv[1:],
-                               "hD:b:dsgt:pc:n:",
+                               "hD:b:dsgt:pc:n:v",
                                ["help","domain=","bandwidth=","dilate_bc",
                                 "singular_kernel","use_grid","num_trials=",
-                                "parallel","num_cores=","num_verts_range="])
+                                "parallel","num_cores=","num_verts_range=","verbose"])
 except getopt.GetoptError:
     print_help()
     sys.exit(2)
@@ -84,6 +87,8 @@ for opt, arg in opts:
         num_verts_max = int(arg.split(',')[1])
         
         num_verts = [2**e  for e in range(num_verts_min, num_verts_max)]
+    elif opt in ("-v", "--verbose"):
+        verbose = True
 
 #Set num_trials=1 for grid
 if use_grid:
@@ -115,7 +120,7 @@ def trial(T):
     bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-7,prog=False,T=1e5,weighted=singular_kernel)
+    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-7,prog=verbose,T=1e5,weighted=singular_kernel)
 
     #Error
     err = np.max(np.absolute(u-aronsson(X)))
