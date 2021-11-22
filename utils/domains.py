@@ -39,9 +39,12 @@ class square(domain):
     
 
 class neumann_triangle(domain):
-    def __init__(self, r = 0.1, **kwargs):
+    def __init__(self, r = 0.1, set_fixed_verts = False, **kwargs):
         super().__init__(**kwargs)
         self.r = r
+        
+        if set_fixed_verts:
+            self.fixed_verts = np.array([[0,1],[1,0]])
     
     
     def boundary(self, X, h):
