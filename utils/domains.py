@@ -2,8 +2,9 @@ import numpy as np
 import graphlearning as gl
 
 class domain:
-    def __init__(self, fixed_verts=np.zeros((0,2))):
+    def __init__(self, fixed_verts=np.zeros((0,2)), set_fixed_verts=False):
         self.fixed_verts = fixed_verts
+        self.set_fixed_verts = set_fixed_verts
     
     def boundary(self):
         pass
@@ -39,11 +40,11 @@ class square(domain):
     
 
 class neumann_triangle(domain):
-    def __init__(self, r = 0.1, set_fixed_verts = False, **kwargs):
+    def __init__(self, r = 0.1, **kwargs):
         super().__init__(**kwargs)
         self.r = r
         
-        if set_fixed_verts:
+        if self.set_fixed_verts:
             self.fixed_verts = np.array([[0,1],[1,0]])
     
     
