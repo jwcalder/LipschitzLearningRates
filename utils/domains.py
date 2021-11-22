@@ -73,7 +73,9 @@ class neumann_star(domain):
             x,y = np.mgrid[-(m-1):m,-(m-1):m]/(m-1) 
             x,y = x.flatten(),y.flatten()
             X = np.vstack((x,y)).T
-        return self.winnow(X)
+        
+        X, _ = self.winnow(X)
+        return np.vstack((X, self.fixed_verts))
     
     def boundary(self, X, h):
         dist1 = np.sqrt(X[:,0]**2 + (X[:,1]-1)**2)
