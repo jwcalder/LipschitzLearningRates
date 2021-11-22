@@ -120,7 +120,7 @@ def trial(T):
     bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-7,prog=verbose,T=1e5,weighted=singular_kernel)
+    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-5,prog=verbose,T=1e5,weighted=singular_kernel)
 
     #Error
     err = np.max(np.absolute(u-aronsson(X)))
