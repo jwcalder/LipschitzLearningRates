@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_data(fname):
+def load_data(fname, encoding = 'utf-8'):
 
-    df = pd.read_csv(fname)
+    df = pd.read_csv(fname, encoding = encoding)
     n_all = df['Number of Points'].values
     h_all = df['Graph Bandwidth'].values
     err_all = df['Error'].values
@@ -18,10 +18,32 @@ def load_data(fname):
         i+=1
     return n,h,err
 
+def single_plot(n, h, err, legend_loc='right'):
+    plt.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",
+        "font.sans-serif": ["Helvetica"],
+        "font.size": 12})
+    styles = ['^-','o-','d-','s-','p-','x-','*-']
+    
+    plt.figure()
+    
+    delta = (np.log(n)/n)**(1/2)
+    p = np.polyfit(np.log(delta[2:]),np.log(err[2:]),1)
+    plt.loglog(delta,err,styles[0],label=r'$h_n\sim\delta_n, \eta=1, r=%.2f$'%max(p[0],0))
+    
+    plt.xlim(1.02*np.max(delta),0.98*np.min(delta))
+    plt.xlabel(r'$\delta_n$',fontsize=18)
+    plt.ylabel('Error',fontsize=18)
+    plt.legend(loc=legend_loc,fontsize=14)
+    plt.tight_layout()
+    ax = plt.gca()
+    ax.grid(which='both', axis='both', linestyle='--')
+
 def make_plot(base_file_name,legend_loc='right'):
 
     plt.rcParams.update({
-        "text.usetex": True,
+    #   "text.usetex": True,
         "font.family": "serif",
         "font.sans-serif": ["Helvetica"],
         "font.size": 12})

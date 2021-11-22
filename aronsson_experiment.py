@@ -49,7 +49,11 @@ eta = kernels.singular()
 
 #Read command line parameters
 try:
-    opts, args = getopt.getopt(sys.argv[1:],"hD:b:dsgt:pc:",["help","domain=","bandwidth=","dilate_bc","singular_kernel","use_grid","num_trials=","parallel","num_cores="])
+    opts, args = getopt.getopt(sys.argv[1:],
+                               "hD:b:dsgt:pc:n:",
+                               ["help","domain=","bandwidth=","dilate_bc",
+                                "singular_kernel","use_grid","num_trials=",
+                                "parallel","num_cores=","num_verts_range="])
 except getopt.GetoptError:
     print_help()
     sys.exit(2)
@@ -75,6 +79,11 @@ for opt, arg in opts:
         parallel = True
     elif opt in ("-c", "--num_cores"):
         num_cores = int(arg)
+    elif opt in ("-n", "--num_verts_range"):
+        num_verts_min = int(arg.split(',')[0])
+        num_verts_max = int(arg.split(',')[1])
+        
+        num_verts = [2**e  for e in range(num_verts_min, num_verts_max)]
 
 #Set num_trials=1 for grid
 if use_grid:
