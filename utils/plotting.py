@@ -20,7 +20,7 @@ def load_data(fname, encoding = 'utf-8'):
 
 def single_plot(n, h, err, legend_loc='right'):
     plt.rcParams.update({
-        "text.usetex": True,
+#        "text.usetex": True,
         "font.family": "serif",
         "font.sans-serif": ["Helvetica"],
         "font.size": 12})
