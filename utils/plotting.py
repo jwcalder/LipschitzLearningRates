@@ -58,13 +58,13 @@ def make_plot(base_file_name,legend_loc='right'):
     plt.figure()
 
     #eta=1
-    p = np.polyfit(np.log(delta[2:]),np.log(err1[2:]),1)
+    p = np.polyfit(np.log(delta),np.log(err1),1)
     plt.loglog(delta,err1,styles[0],label=r'$h_n\sim\delta_n, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
 
-    p = np.polyfit(np.log(delta[2:]),np.log(err2[2:]),1)
+    p = np.polyfit(np.log(delta),np.log(err2),1)
     plt.loglog(delta,err2,styles[1],label=r'$h_n\sim\delta_n^{2/3}, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
 
-    p = np.polyfit(np.log(delta[2:]),np.log(err3[2:]),1)
+    p = np.polyfit(np.log(delta),np.log(err3),1)
     plt.loglog(delta,err3,styles[2],label=r'$h_n\sim\delta_n^{1/2}, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
 
 
