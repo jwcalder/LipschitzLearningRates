@@ -99,7 +99,7 @@ if domain == 'square':
     dilate_bc = True
     
 ## Definition of one trial
-def trial(T):
+def trial(T, n):
     #Draw data randomly        
     X = Omega.sample(n,use_grid)
 
@@ -134,10 +134,10 @@ for n in num_verts:
     #Number of cores for parallel processing
     if parallel:
         num_cores = min(multiprocessing.cpu_count(),num_cores)
-        Parallel(n_jobs=num_cores)(delayed(trial)(T) for T in range(num_trials))
+        Parallel(n_jobs=num_cores)(delayed(trial)(T, n) for T in range(num_trials))
     else:
         for i in range(num_trials):
-            trial(i)
+            trial(i, n)
 
    
 
