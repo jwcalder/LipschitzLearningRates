@@ -1,6 +1,12 @@
 import numpy as np
 import graphlearning as gl
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+
 
 import sys,getopt
 from joblib import Parallel, delayed
@@ -17,7 +23,7 @@ num_verts_max = 14
 
 num_verts = [2**e  for e in range(num_verts_min, num_verts_max)]
 num_cores = 1
-domain = 'square'
+domain = 'neumann_star'
 bandwidth_exp = 1.0
 bandwidth_constant = 2.5
 dilate_bc = False
@@ -28,7 +34,7 @@ parallel = False
 verbose = False
 
 # domain and kernel
-Omega = domains.neumann_star()
+Omega = getattr(domains, domain)()
 eta = kernels.singular()
 
 #%% figure
@@ -66,8 +72,21 @@ for idx, n in enumerate(num_verts):
     
     ax[idx].scatter(X[:,0],X[:,1],c=u,s=2, cmap='viridis')
     ax[idx].scatter(X[bdy_idx, 0],X[bdy_idx, 1],c='red',s=20, marker = '8')
-    ax[idx].set_xlim([-1,1])
-    ax[idx].set_ylim([-1,1])
+    
+    if domain == 'square':
+        ax[idx].set_xlim([0,1])
+        ax[idx].set_ylim([0,1])
+        plt.xticks(np.arange(0, 1.2, step=0.5)) 
+        plt.xticks(np.arange(0, 1.2, step=0.5)) 
+        plt.yticks(np.arange(0, 1.2, step=0.5)) 
+        plt.yticks(np.arange(0, 1.2, step=0.5)) 
+    else:
+        ax[idx].set_xlim([-1,1])
+        ax[idx].set_ylim([-1,1])
+        plt.xticks(np.arange(-1, 1.2, step=0.5)) 
+        plt.xticks(np.arange(-1, 1.2, step=0.5)) 
+        plt.yticks(np.arange(-1, 1.2, step=0.5)) 
+        plt.yticks(np.arange(-1, 1.2, step=0.5)) 
     #Error
     err = np.max(np.absolute(u-aronsson(X)))
 
@@ -75,10 +94,7 @@ for idx, n in enumerate(num_verts):
     print('%d,%f,%f'%(n,h,err),flush=True)
 
 #%% adjust size
-plt.tight_layout()
-plt.savefig('figures/neumann_star_solution.pdf')
-plt.show()
-# width = 5.50107/1.0
-# height = 8.02778/(4.0)
-#fig.set_size_inches(width, height, dpi=dpi)
+plt.draw()
+plt.savefig('figures/' + domain + '_solution.pdf')
+
 

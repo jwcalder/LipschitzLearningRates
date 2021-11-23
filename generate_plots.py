@@ -9,4 +9,5 @@ plotting.make_plot('aronsson_star_dilateBC',legend_loc='upper right')
 #Square plot
 plotting.make_plot('aronsson_square',legend_loc='upper right')
 
+
 plt.show()
