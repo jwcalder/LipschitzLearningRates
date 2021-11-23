@@ -30,10 +30,12 @@ class square(domain):
         super().__init__(**kwargs)
         self.r = r
     
-    def boundary(self, X, delta=0.1):
-        bdy_mask = np.where((X[:,0] > 1-delta) | (X[:,1] > 1-delta))
-        return bdy_mask[0]
-    
+    def boundary(self, X, h=0.1):        
+        bdy_mask = np.where((X[:,0] > 1-h) | (X[:,1] > 1-h))
+        bdy_idx = bdy_mask[0]
+        return bdy_idx
+        
+            
     def winnow(self, X):
         idx = np.where((X[:,0]-0.5)**2+(X[:,1]-0.5)**2 > self.r**2)
         return X[idx[0], :], idx[0]
