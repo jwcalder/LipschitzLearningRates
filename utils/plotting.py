@@ -55,13 +55,19 @@ def make_plot(base_file_name,legend_loc='right'):
 
     delta = (np.log(n)/n)**(1/2)
 
+<<<<<<< HEAD
+=======
+    plt.figure()
+
+>>>>>>> e55a8b87dea080728232bbd52a20ae1aa5e957c7
     #eta=1
     fig, ax = plt.subplots()
 
     p = np.polyfit(np.log(delta[2:]),np.log(err1[2:]),1)
-    plt.loglog(delta,err1,styles[0],label=r'$h_n\sim\delta_n, \eta=1, r=%.2f$'%max(p[0],0))
+    plt.loglog(delta,err1,styles[0],label=r'$h_n\sim\delta_n, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
 
     p = np.polyfit(np.log(delta[2:]),np.log(err2[2:]),1)
+<<<<<<< HEAD
     plt.loglog(delta,err2,styles[1],label=r'$h_n\sim\delta_n^{2/3}, \eta=1, r=%.2f$'%max(p[0],0))
 
     p = np.polyfit(np.log(delta),np.log(err3),1)
@@ -93,6 +99,13 @@ def make_plot(base_file_name,legend_loc='right'):
 
     p = np.polyfit(np.log(delta[2:]),np.log(err3_s[2:]),1)
     plt.loglog(delta,err3_s,styles[2],label=r'$h_n\sim\delta_n^{1/2}, \eta(t)=t^{-1}, r=%.2f$'%max(p[0],0))
+=======
+    plt.loglog(delta,err2,styles[1],label=r'$h_n\sim\delta_n^{2/3}, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
+
+    p = np.polyfit(np.log(delta[2:]),np.log(err3[2:]),1)
+    plt.loglog(delta,err3,styles[2],label=r'$h_n\sim\delta_n^{1/2}, {\rm rate}\sim \delta_n^{\,%.2f}$'%max(p[0],0))
+
+>>>>>>> e55a8b87dea080728232bbd52a20ae1aa5e957c7
 
     plt.xlim(1.02*np.max(delta),0.98*np.min(delta))
     plt.xlabel(r'$\delta_n$',fontsize=18)
@@ -101,7 +114,4 @@ def make_plot(base_file_name,legend_loc='right'):
     plt.tight_layout()
     ax.grid(which='both', axis='both', linestyle='--')
     plt.savefig('figures/' + base_file_name + '_plot_singular.pdf')
-
-
-
 

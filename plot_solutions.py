@@ -97,3 +97,4 @@ for idx, n in enumerate(num_verts):
 plt.draw()
 plt.savefig('figures/' + domain + '_solution.pdf')
 
+
