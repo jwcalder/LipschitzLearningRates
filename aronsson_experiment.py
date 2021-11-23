@@ -24,6 +24,7 @@ def print_help():
     print('   -D (--domain=): Domain (Options=square, neumann_triangle, neumann_star, default=box).')
     print('   -n (--num_verts_range=): Range for number of vertices in the form 2^a up to 2^(b-1) (default: a,b=12,17).')
     print('   -b (--bandwidth=): Graph bandwidth constant a and exponent b in form h= a*delta^b (default: a,b=1,1).')
+    print('   -e (--error_tol=): Error tolerance for solving Lipschitz extension 10^-e (default: e=4).')
     print('   -d (--dilate_bc): Dilate boundary points by graph bandwidth.')
     print('   -s (--singular_kernel): Use a singular kernel for weights.')
     print('   -g (--use_grid): Replace iid sequence with a grid.')
@@ -45,6 +46,7 @@ use_grid = False
 num_trials = 10
 parallel = False
 verbose = False
+tol = 1e-4
 
 # domain and kernel
 Omega = domains.neumann_triangle()
@@ -53,8 +55,8 @@ eta = kernels.singular()
 #Read command line parameters
 try:
     opts, args = getopt.getopt(sys.argv[1:],
-                               "hD:b:dsgt:pc:n:v",
-                               ["help","domain=","bandwidth=","dilate_bc",
+                               "hD:b:e:dsgt:pc:n:v",
+                               ["help","domain=","bandwidth=","error_tol=","dilate_bc",
                                 "singular_kernel","use_grid","num_trials=",
                                 "parallel","num_cores=","num_verts_range=","verbose"])
 except getopt.GetoptError:
@@ -70,6 +72,8 @@ for opt, arg in opts:
     elif opt in ("-b", "--bandwidth"):
         bandwidth_constant = float(arg.split(',')[0])
         bandwidth_exp = float(arg.split(',')[1])
+    elif opt in ("-e", "--error_tol"):
+        tol = 10**(-int(arg))
     elif opt in ("-d", "--dilate_bc"):
         dilate_bc = True
     elif opt in ("-s", "--singular_kernel"):
@@ -120,7 +124,7 @@ def trial(T, n):
     bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-4,prog=verbose,T=1e5,weighted=singular_kernel)
+    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=tol,prog=verbose,T=1e5,weighted=singular_kernel)
 
     #Error
     err = np.max(np.absolute(u-aronsson(X)))
