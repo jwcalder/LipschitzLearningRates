@@ -75,5 +75,5 @@ def make_plot(base_file_name,legend_loc='right'):
     plt.tight_layout()
     ax = plt.gca()
     ax.grid(which='both', axis='both', linestyle='--')
-    plt.savefig('figures/' + base_file_name + '_plot_constant.pdf')
+    plt.savefig('figures/' + base_file_name + '_plot.pdf')
 
