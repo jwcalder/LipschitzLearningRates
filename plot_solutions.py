@@ -75,7 +75,9 @@ for idx, n in enumerate(num_verts):
     print('%d,%f,%f'%(n,h,err),flush=True)
 
 #%% adjust size
-#plt.tight_layout()
+plt.tight_layout()
+plt.savefig('figures/neumann_star_solution.pdf')
+plt.show()
 # width = 5.50107/1.0
 # height = 8.02778/(4.0)
 #fig.set_size_inches(width, height, dpi=dpi)
