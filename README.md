@@ -1,6 +1,7 @@
 # :chart_with_downwards_trend: LipschitzLearningRates
 
-<img src="https://user-images.githubusercontent.com/44805883/143226387-588b7ee9-8a67-4d25-b749-a0511fa6eed7.png" width="600">
+<img src="https://user-images.githubusercontent.com/44805883/143242524-56382527-3353-4270-b23a-416d5b14f3e0.png" width="800">
+
 
 The code in this repository reproduces the experimental results on convergence rates for k-nearest neighbor graph infinity Laplacians from our paper 
 
