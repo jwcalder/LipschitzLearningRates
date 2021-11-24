@@ -1,4 +1,4 @@
-# :chart_with_downwards_trend: LipschitzLearningRates
+# :chart_with_upwards_trend: LipschitzLearningRates
 
 <img src="https://user-images.githubusercontent.com/44805883/143242524-56382527-3353-4270-b23a-416d5b14f3e0.png" width="800">
 
