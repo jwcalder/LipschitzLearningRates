@@ -45,7 +45,9 @@ Our code verifies our convergence proofs for solutions of the graph infinity Lap
 on a point cloud <img src="https://latex.codecogs.com/svg.latex?\Omega_n" title="graph"/> with constraint set <img src="https://latex.codecogs.com/svg.latex?\mathcal{O}_n" title="calOn"/> to an *Absolutely Minimizing Lipschitz Extension* on the continuum domain <img src="https://latex.codecogs.com/svg.latex?\Omega" title="domain"/> with constraint set <img src="https://latex.codecogs.com/svg.latex?\mathcal{O}" title="calO"/>, i.e., a solution of
 
 <p align="center">
-      <img src="https://latex.codecogs.com/svg.latex?\begin{cases}\operatorname{Lip}(u;A)=\operatorname{Lip}(u;\partial\,A),\;&\forall\,A\subset\subset\Omega\\u=g,\;&\text{on}\,\mathcal{O}.\end{cases}" title="AMLE" />
+      <img src="https://latex.codecogs.com/svg.latex?\begin{cases}\operatorname{Lip}_\Omega(u;A)=\operatorname{Lip}_\Omega(u;\partial\,A),\;&\forall\,A\subset\subset\Omega\\u=g,\;&\text{on}\,\mathcal{O},\end{cases}" title="AMLE" />
 </p>
+
+where <img src="https://latex.codecogs.com/svg.latex?\operatorname{Lip}_\Omega" title="Lip"/> is the *geodesic* Lipschitz constant.
 
 The relative scaling of the graph bandwidth <img src="https://latex.codecogs.com/svg.latex?h_n" title="bw"/> to the resolution of the graph <img src="https://latex.codecogs.com/svg.latex?\delta_n" title="delta"/>, defined as Hausdorff distance between <img src="https://latex.codecogs.com/svg.latex?\Omega_n" title="graph"/> and <img src="https://latex.codecogs.com/svg.latex?\Omega" title="domain"/> can be set with the `-b` option in `all_experiments.sh`.
