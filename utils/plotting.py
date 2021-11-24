@@ -71,7 +71,7 @@ def make_plot(base_file_name,legend_loc='right'):
     plt.xlim(1.02*np.max(delta),0.98*np.min(delta))
     plt.xlabel(r'$\delta_n$',fontsize=18)
     plt.ylabel('Error',fontsize=18)
-    plt.legend(loc=legend_loc,fontsize=14)
+    plt.legend(loc=legend_loc,fontsize=16)
     plt.tight_layout()
     ax = plt.gca()
     ax.grid(which='both', axis='both', linestyle='--')
