@@ -1,4 +1,7 @@
 # :chart_with_downwards_trend: LipschitzLearningRates
+
+![image](https://user-images.githubusercontent.com/44805883/143226387-588b7ee9-8a67-4d25-b749-a0511fa6eed7.png)
+
 The code in this repository reproduces the experimental results on convergence rates for k-nearest neighbor graph infinity Laplacians from our paper 
 
 Bungert, Calder, and Roith. [Uniform Convergence Rates for Lipschitz Learning on Graphs](https://arxiv.org/abs/). arXiv, 2021.
