@@ -30,7 +30,7 @@ python generate_plots.py
 ```
 All figures are saved in the figures folder.
 
-## :bulb: 
+## :bulb: Mathematical Models
 
 Our code verifies our convergence proofs for solutions of the graph infinity Laplacian equation
 
