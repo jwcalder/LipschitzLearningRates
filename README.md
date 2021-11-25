@@ -5,7 +5,7 @@
 
 The code in this repository reproduces the experimental results on convergence rates for k-nearest neighbor graph infinity Laplacians from our paper 
 
-Bungert, Calder, and Roith. [Uniform Convergence Rates for Lipschitz Learning on Graphs](https://arxiv.org/abs/). arXiv, 2021.
+Bungert, Calder, and Roith. [Uniform Convergence Rates for Lipschitz Learning on Graphs](https://arxiv.org/abs/2111.12370). arXiv, 2021.
 
 Feel free to use it and please refer to our paper when doing so.
 ```
@@ -13,7 +13,7 @@ Feel free to use it and please refer to our paper when doing so.
       title={Uniform Convergence Rates for Lipschitz Learning on Graphs}, 
       author={Leon Bungert and Jeff Calder and Tim Roith},
       year={2021},
-      eprint={},
+      eprint={2111.12370},
       archivePrefix={arXiv},
       primaryClass={math.NA}
 }
