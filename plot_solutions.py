@@ -57,10 +57,11 @@ for idx, n in enumerate(num_verts):
     #Build a graph
     delta = (np.log(n)/n)**(1/2)
     h = bandwidth_constant * delta**bandwidth_exp
-    W = gl.eps_weight_matrix(X,h,f=eta)*2/h
-    if not gl.isconnected(W):
+    W = gl.weightmatrix.epsilon_ball(X,h,eta=eta)*2/h
+    G = gl.graph(W)
+    if not G.isconnected():
         print("Not connected!")
- 
+
     #Boundary indices
     bdy_idx = Omega.boundary(X,0)
 
@@ -68,7 +69,7 @@ for idx, n in enumerate(num_verts):
     bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=1e-5,prog=verbose,T=1e5,weighted=singular_kernel)
+    u = G.amle(bdy_idx,bdy_val,tol=1e-5,prog=verbose,max_num_it=1e5,weighted=singular_kernel)
     
     ax[idx].scatter(X[:,0],X[:,1],c=u,s=2, cmap='viridis')
     ax[idx].scatter(X[bdy_idx, 0],X[bdy_idx, 1],c='red',s=20, marker = '8')

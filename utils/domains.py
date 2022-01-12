@@ -11,7 +11,7 @@ class domain:
     
     def sample(self, n, usegrid=False):
         if not usegrid:
-            X = gl.rand(n, 2)
+            X = np.random.rand(n, 2)
         else:
             m = int(np.sqrt(n))
             x,y = np.mgrid[0:m,0:m]/(m-1) 
@@ -73,7 +73,7 @@ class neumann_star(domain):
     
     def sample(self, n, usegrid):
         if not usegrid:
-            X = 2*gl.rand(4*n, 2) - np.ones((1,2))
+            X = 2*np.random.rand(4*n, 2) - np.ones((1,2))
         else:
             m = int(np.sqrt(n))
             x,y = np.mgrid[-(m-1):m,-(m-1):m]/(m-1) 

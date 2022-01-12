@@ -110,8 +110,9 @@ def trial(T, n):
     #Build a graph
     delta = (np.log(n)/n)**(1/2)
     h = bandwidth_constant * delta**bandwidth_exp
-    W = gl.eps_weight_matrix(X,h,f=eta)*2/h
-    if not gl.isconnected(W):
+    W = gl.weightmatrix.epsilon_ball(X,h,eta=eta)*2/h
+    G = gl.graph(W)
+    if not G.isconnected():
         print("Not connected!")
  
     #Boundary indices
@@ -124,7 +125,7 @@ def trial(T, n):
     bdy_val = aronsson(X[bdy_idx,:])
 
     #Lipschitz extension
-    u = gl.lip_extension(W,bdy_idx,bdy_val,tol=tol,prog=verbose,T=1e5,weighted=singular_kernel)
+    u = G.amle(bdy_idx,bdy_val,tol=tol,prog=verbose,max_num_it=1e5,weighted=singular_kernel)
 
     #Error
     err = np.max(np.absolute(u-aronsson(X)))
